@@ -2,4 +2,6 @@
 *.sqlite
 uploads/*
 
+.env
+
 !uploads/.gitkeep
