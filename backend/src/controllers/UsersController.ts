@@ -1,36 +1,20 @@
 import { Request, Response } from 'express';
 import { classToClass } from 'class-transformer';
+import { container } from 'tsyringe';
 
-import { getRepository } from 'typeorm'
-import { hash } from 'bcryptjs'
-
-import User from '../models/User'
+import CreateUserService from '../services/CreateUserService'
 
 export default class UsersController {
     async create(request: Request, response: Response): Promise<Response> {
         const { name, email, password } = request.body;
 
-        const usersRepository = getRepository(User)
+        const createUser = container.resolve(CreateUserService);
 
-        const checkUserExists = await usersRepository.findOne({
-            where: { email }
-        });
-
-        if (checkUserExists) {
-            throw new Error('Email address already used.');
-        }
-
-        const hashedPassword = await hash(password, 8)
-
-        const data = {
+        const user = await createUser.execute({
             name,
             email,
-            password: hashedPassword,
-        }
-
-        const user = usersRepository.create(data)
-
-        await usersRepository.save(user)
+            password,
+        });
 
         return response.json(classToClass(user));
     }

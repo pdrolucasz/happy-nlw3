@@ -1,10 +1,11 @@
 import { Router } from 'express';
 
-import AuthenticateController from '../controllers/AuthenticateController';
+import UsersController from '../controllers/UsersController';
 
 const usersRouter = Router();
-const usersController = new AuthenticateController();
 
-usersRouter.post('/', usersController.create);
+const usersController = new UsersController();
+
+usersRouter.post('/', usersController.create,);
 
 export default usersRouter;

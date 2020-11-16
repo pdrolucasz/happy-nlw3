@@ -1,43 +1,20 @@
 import { Request, Response } from 'express';
 import { classToClass } from 'class-transformer'
-import { getRepository } from 'typeorm';
-import { compare } from 'bcryptjs'
-import { sign } from 'jsonwebtoken';
+import { container } from 'tsyringe'
 
-import User from '../models/User'
-
-import authConfig from '../config/auth'
+import AuthenticateUserService from '../services/AuthenticateUserService'
 
 export default class UsersController {
     async create(request: Request, response: Response): Promise<Response> {
         const { email, password } = request.body;
 
-        const usersRepository = getRepository(User)
+        const authenticateUser = container.resolve(AuthenticateUserService);
 
-        const userExists = await usersRepository.findOne({
-            where: { email }
-        });
-
-        if (!userExists) {
-            throw new Error('Incorrect email/password combination');
-        }
-
-        const passwordCompared = await compare(
+        const { user, token } = await authenticateUser.execute({
+            email,
             password,
-            userExists.password,
-        );
-
-        if (!passwordCompared) {
-            throw new Error('Incorrect email/password combination');
-        }
-
-        const { secret, expiresIn } = authConfig.jwt;
-
-        const tokenJWT = sign({}, secret, {
-            subject: String(userExists.id),
-            expiresIn,
         });
 
-        return response.json({ user: classToClass(userExists), tokenJWT });
+        return response.json({ user: classToClass(user), token });
     }
 }

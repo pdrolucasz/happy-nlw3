@@ -1,24 +1,24 @@
-import { Request, Response } from 'express'
-import { injectable, inject } from 'tsyringe';
+import { injectable, inject } from 'tsyringe'
 import path from 'path'
 
-import { getRepository } from 'typeorm'
-
+import IMailProvider from '../providers/MailProvider/models/IMailProvider'
 import UserToken from '../models/UserToken'
 import User from '../models/User'
 
-import IMailProvider from '../providers/MailProvider/models/IMailProvider'
+interface Request {
+    email: string
+}
+
+import { getRepository } from 'typeorm'
 
 @injectable()
-export default class ForgotPasswordController {
+class SendForgotPasswordEmailService {
     constructor(
         @inject('MailProvider')
         private mailProvider: IMailProvider,
     ) {}
 
-    public async create(request: Request, response: Response): Promise<Response> {
-        const { email } = request.body;
-
+    public async execute({ email }: Request): Promise<void> {
         const usersTokenRepository = getRepository(UserToken)
         const usersRepository = getRepository(User)
 
@@ -41,7 +41,7 @@ export default class ForgotPasswordController {
             '..',
             'views',
             'forgot_password.hbs',
-        );
+        )
 
         await this.mailProvider.sendMail({
             to: {
@@ -56,8 +56,8 @@ export default class ForgotPasswordController {
                     link: `${process.env.APP_WEB_URL}/reset-password?token=${userToken.token}`,
                 },
             },
-        });
-
-        return response.status(204).json()
+        })
     }
 }
+
+export default SendForgotPasswordEmailService

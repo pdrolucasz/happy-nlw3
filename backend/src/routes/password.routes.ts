@@ -1,18 +1,25 @@
-import { Router } from 'express';
+import { Router } from 'express'
 
-import { container } from 'tsyringe';
+import { container } from 'tsyringe'
 
-import ForgotPasswordController from '../controllers/ForgotPasswordController';
+import ForgotPasswordController from '../controllers/ForgotPasswordController'
 
-const passwordRouter = Router();
+import ResetPasswordController from '../controllers/ResetPasswordController'
 
-const forgotPasswordController = container.resolve(
-    ForgotPasswordController
-)
+const passwordRouter = Router()
+
+const forgotPasswordController = new ForgotPasswordController();
+
+const resetPasswordController = new ResetPasswordController();
 
 passwordRouter.post(
     '/forgot',
     forgotPasswordController.create,
-);
+)
 
-export default passwordRouter;
+passwordRouter.post(
+    '/reset',
+    resetPasswordController.create,
+)
+
+export default passwordRouter
