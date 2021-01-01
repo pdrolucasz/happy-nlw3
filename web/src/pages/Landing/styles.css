@@ -41,11 +41,15 @@
     line-height: 34px;
 }
 
-.content-wrapper .location {
-    position: absolute;
-    right: 0;
-    top: 0;
+.content-wrapper div {
+    display: flex;
+}
 
+.content-wrapper div div.location{
+    margin-left: 5rem;
+}
+
+.content-wrapper .location {    
     font-size: 24px;
     line-height: 34px;
 
@@ -55,7 +59,42 @@
     text-align: right;
 }
 
-.content-wrapper .location strong{
+.content-wrapper .access {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    font-size: 20px;
+    line-height: 34px;
+
+    display: flex;
+    flex-direction: column;
+
+    text-align: right;
+    text-decoration: none;
+
+    width: 222px;
+    height: 56px;
+    border: 0;
+    cursor: pointer;
+    background: #12D4E0;
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-weight: 800;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: background-color 0.2s;
+}
+
+.content-wrapper .access:hover {
+    background: #96FEFF;
+    color: #12D4E0;
+}
+
+.content-wrapper div .location strong{
     font-weight: 800;
 }
 
