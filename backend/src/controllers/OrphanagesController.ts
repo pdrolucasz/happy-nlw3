@@ -14,7 +14,9 @@ export default {
             relations: ['images']
         })
 
-        return response.json(orphanageView.renderMany(orphanages))
+        const orphanagesFiltered = orphanages.filter(orphanage => orphanage.available == true) 
+
+        return response.json(orphanageView.renderMany(orphanagesFiltered))
     },
 
     async show(request: Request, response: Response) {
@@ -25,6 +27,10 @@ export default {
         const orphanage = await orphanageRepository.findOneOrFail(id, {
             relations: ['images']
         })
+
+        if(!orphanage.available) {
+            throw new Error('Orphanage awaiting evaluation')
+        }
 
         return response.json(orphanageView.render(orphanage))
     },
@@ -80,6 +86,7 @@ export default {
     
         const orphanage = orphanageRepository.create(data)
             
+        // orphanage will be created with false available by default
         await orphanageRepository.save(orphanage)
         
         return response.status(201).json(orphanage)
