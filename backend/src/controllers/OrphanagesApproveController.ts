@@ -50,5 +50,19 @@ export default {
         await orphanageRepository.save(orphanageWillBeApproved)
         
         return response.status(201).json(orphanageWillBeApproved)
+    },
+
+    async delete(request: Request, response: Response) {
+        const { id } = request.params
+        
+        const orphanageRepository = getRepository(Orphanage)
+
+        const orphanage = await orphanageRepository.findOneOrFail(id, {
+            relations: ['images']
+        })
+
+        await orphanageRepository.remove(orphanage)
+
+        return response.status(204).send()
     }
 }
