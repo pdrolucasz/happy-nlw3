@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import { Form } from '@unform/web'
+import { FormHandles } from '@unform/core'
 
 import logotipo from '../../images/logotipo.svg'
+
+import Input from '../../components/Input'
+import Button from '../../components/Button'
 
 import './styles.css'
 
 const SignIn: React.FC = () => {
-    const [isFilled, setIsFilled] = useState(false)
+    const formRef = useRef<FormHandles>(null)
 
-    function handleInputBlur() {
-        setIsFilled(true)
+    function handleSubmit() {
+
     }
 
     return (
@@ -29,25 +34,23 @@ const SignIn: React.FC = () => {
                 <Link to="/" className="back-landing">
                     <FiArrowLeft size={26} color="#15C3D6" />
                 </Link>
-                <form className="signin">
+                <Form ref={formRef} onSubmit={handleSubmit} className="signin">
                     <legend>Fazer login</legend>
 
                     <div className="input-block">
                         <label htmlFor="email">E-mail</label>
-                        <input
+                        <Input
+                            name="email"
                             id="email"
-                            onBlur={handleInputBlur}
-                            className={isFilled ? 'green' : ''}
                         />
                     </div>
 
                     <div className="input-block">
                         <label htmlFor="senha">Senha</label>
-                        <input
+                        <Input
+                            name="senha"
                             id="senha"
                             type="password"
-                            onBlur={handleInputBlur}
-                            className={isFilled ? 'green' : ''}
                         />
                     </div>
 
@@ -63,10 +66,10 @@ const SignIn: React.FC = () => {
                         <Link to="/forgot-password">Esqueci minha senha</Link>
                     </div>
 
-                    <button className="confirm-button" type="submit">
+                    <Button type="submit">
                         Confirmar
-                    </button>
-                </form>
+                    </Button>
+                </Form>
             </main>
         </div>
     )

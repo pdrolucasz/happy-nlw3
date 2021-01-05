@@ -1,0 +1,18 @@
+div + div {
+    margin-top: 24px;
+}
+
+.container input {
+    width: 100%;
+    background: #F5F8FA;
+    border: 1px solid #D3E2E5;
+    border-radius: 20px;
+    outline: none;
+    color: #5C8599;
+    height: 64px;
+    padding: 0 16px;
+}
+
+input.green {
+    border: 1px solid #37C77F;
+}
