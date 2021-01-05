@@ -1,0 +1,47 @@
+import { injectable, inject } from 'tsyringe'
+
+import { getRepository } from 'typeorm'
+
+import User from '../infra/typeorm/entities/User'
+
+import IUsersRepository from '../repositories/IUsersRepository'
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+
+interface Request {
+    name: string
+    email: string
+    password: string
+}
+
+@injectable()
+class CreateUserService  {
+    constructor(
+        @inject('UsersRepository')
+        private usersRepository: IUsersRepository,
+    
+        @inject('HashProvider')
+        private hashProvider: IHashProvider,
+    ) {}
+
+    public async execute({ name, email, password }: Request): Promise<User> {
+        const checkUserExists = await this.usersRepository.findByEmail(email)
+
+        if (checkUserExists) {
+            throw new Error('Email address already used.')
+        }
+
+        const hashedPassword = await this.hashProvider.generateHash(password)
+
+        const data = {
+            name,
+            email,
+            password: hashedPassword,
+        }
+
+        const user = this.usersRepository.create(data)
+
+        return user
+    }
+}
+
+export default CreateUserService
