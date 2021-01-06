@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useCallback } from 'react'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { Form } from '@unform/web'
@@ -8,15 +8,23 @@ import logotipo from '../../images/logotipo.svg'
 
 import Input from '../../components/Input'
 import Button from '../../components/Button'
+import CheckBox from '../../components/CheckBox'
 
 import './styles.css'
+
+interface SignInFormData {
+    email: string
+    password: string
+    lembrar: string
+}
 
 const SignIn: React.FC = () => {
     const formRef = useRef<FormHandles>(null)
 
-    function handleSubmit() {
-
-    }
+    const handleSubmit = useCallback(async (data: SignInFormData) => {
+        console.log(data)
+        console.log(!!data.lembrar)
+    }, [])
 
     return (
         <div id="page-signin">
@@ -55,13 +63,7 @@ const SignIn: React.FC = () => {
                     </div>
 
                     <div className="options-login">
-                        <div className="input-checkbox">
-                            <input
-                                id="lembrar"
-                                type="checkbox"
-                            />
-                            <label htmlFor="lembrar">Lembrar-me</label>
-                        </div>
+                        <CheckBox name="lembrar">Lembrar-me</CheckBox>
 
                         <Link to="/forgot-password">Esqueci minha senha</Link>
                     </div>
