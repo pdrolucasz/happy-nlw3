@@ -1,8 +1,10 @@
 import React, { useRef, useCallback } from 'react'
 import { FiArrowLeft } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
+
+import { useAuth } from '../../hooks/auth'
 
 import logotipo from '../../images/logotipo.svg'
 
@@ -21,10 +23,23 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
     const formRef = useRef<FormHandles>(null)
 
+    const { signIn } = useAuth()
+
+    const history = useHistory()
+
     const handleSubmit = useCallback(async (data: SignInFormData) => {
-        console.log(data)
-        console.log(!!data.lembrar)
-    }, [])
+        try {
+            await signIn({
+                email: data.email,
+                password: data.password,
+                remember: !!data.lembrar
+            })
+
+            history.push('/dashboard')
+        }catch(err) {
+            console.log(err)
+        }
+    }, [history, signIn])
 
     return (
         <div id="page-signin">
@@ -56,7 +71,7 @@ const SignIn: React.FC = () => {
                     <div className="input-block">
                         <label htmlFor="senha">Senha</label>
                         <Input
-                            name="senha"
+                            name="password"
                             id="senha"
                             type="password"
                         />
