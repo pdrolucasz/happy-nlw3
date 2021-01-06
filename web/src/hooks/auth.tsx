@@ -11,9 +11,15 @@ interface AuthState {
     user: User
 }
 
+interface SignInCredentials {
+    email: string
+    password: string
+    remember: boolean
+}
+
 interface AuthContextData {
     user: User
-    signIn(credentials: User): Promise<void>
+    signIn(credentials: SignInCredentials): Promise<void>
     signOut(): void
     updateUser(user: User): void
 }
@@ -34,16 +40,18 @@ export const AuthProvider: React.FC = ({ children }) => {
         return {} as AuthState
     })
 
-    const signIn = useCallback(async ({ email, password }) => {
-        const response = await api.post('/sessions', {
+    const signIn = useCallback(async ({ email, password, remember }) => {
+        const response = await api.post('sessions', {
             email,
             password
         })
 
         const { token, user } = response.data
 
-        localStorage.setItem('@Happy:token', token)
-        localStorage.setItem('@Happy:user', JSON.stringify(user))
+        if(remember) {
+            localStorage.setItem('@Happy:token', token)
+            localStorage.setItem('@Happy:user', JSON.stringify(user))
+        }
         
         api.defaults.headers.authorization = `Bearer ${token}`
 
