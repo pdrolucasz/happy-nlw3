@@ -1,8 +1,19 @@
 import React from 'react'
 
+import Sidebar from '../../components/Sidebar'
+import './styles.css'
+
 const Dashboard: React.FC = () => {
     return(
-        <h1>Hello World</h1>
+        <div id="page-dashboard">
+            <Sidebar dashboard={true} />
+            <main>
+                <header>
+                    <h1>Orfanatos Cadastrados</h1>
+                    <span>2 orfanatos</span>
+                </header>
+            </main>
+        </div>
     )
 }
 
