@@ -58,6 +58,6 @@ export default {
 
         const orphanage = await createOrphanageService.execute(data)
         
-        return response.status(201).json(orphanage)
+        return response.status(201).json(orphanageView.render(orphanage))
     }
 }
