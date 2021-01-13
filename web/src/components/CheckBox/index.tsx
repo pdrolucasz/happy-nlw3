@@ -2,7 +2,7 @@ import React, { InputHTMLAttributes, useEffect, useRef } from 'react'
 
 import { useField } from '@unform/core'
 
-import './styles.css'
+import { Container } from './styles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string
@@ -35,9 +35,7 @@ const Checkbox: React.FC<InputProps> = ({ name, children, ...rest }) => {
     }, [defaultValue, fieldName, registerField])
 
     return (
-        <div
-            className="container"
-        >
+        <Container>
             <input
                 ref={inputRef}
                 id="check"
@@ -45,7 +43,7 @@ const Checkbox: React.FC<InputProps> = ({ name, children, ...rest }) => {
                 {...rest}
             />
             <label htmlFor="check">{children}</label>
-        </div>
+        </Container>
     )
 }
 

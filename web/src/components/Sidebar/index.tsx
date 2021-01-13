@@ -6,7 +6,7 @@ import mapMarkerImg from '../../images/map-marker.svg';
 
 import { useAuth } from '../../hooks/auth'
 
-import './styles.css'
+import { Container } from './styles'
 
 interface SidebarProps {
     dashboard?: boolean
@@ -17,7 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({ dashboard }) => {
     const { signOut } = useAuth()
 
     return (
-        <aside className="app-sidebar">
+        <Container>
             <img src={mapMarkerImg} alt="Happy" />
 
             {/*<main>
@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ dashboard }) => {
                     </button>
                 }
             </footer>
-        </aside>
+        </Container>
     )
 }
 

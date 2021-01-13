@@ -12,7 +12,7 @@ import Input from '../../components/Input'
 import Button from '../../components/Button'
 import CheckBox from '../../components/CheckBox'
 
-import './styles.css'
+import { Container, Background, Login } from './styles'
 
 interface SignInFormData {
     email: string
@@ -42,8 +42,8 @@ const SignIn: React.FC = () => {
     }, [history, signIn])
 
     return (
-        <div id="page-signin">
-            <div className="background">
+        <Container>
+            <Background>
                 
                 <img src={logotipo} alt="Happy logotipo"/>
                 <div className="location">
@@ -51,44 +51,40 @@ const SignIn: React.FC = () => {
                     <span>Ceará</span>
                 </div>
                 
-            </div>
+            </Background>
 
-            <main className="login">
+            <Login>
                 <Link to="/" className="back-landing">
                     <FiArrowLeft size={26} color="#15C3D6" />
                 </Link>
                 <Form ref={formRef} onSubmit={handleSubmit} className="signin">
                     <legend>Fazer login</legend>
 
-                    <div className="input-block">
-                        <label htmlFor="email">E-mail</label>
-                        <Input
-                            name="email"
-                            id="email"
-                        />
-                    </div>
+                    <Input
+                        label="E-mail"
+                        name="email"
+                        id="email"
+                    />
 
-                    <div className="input-block">
-                        <label htmlFor="senha">Senha</label>
-                        <Input
-                            name="password"
-                            id="senha"
-                            type="password"
-                        />
-                    </div>
+                    <Input
+                        label="Senha"
+                        name="password"
+                        id="senha"
+                        type="password"
+                    />
 
                     <div className="options-login">
                         <CheckBox name="lembrar">Lembrar-me</CheckBox>
 
-                        <Link to="/forgot-password">Esqueci minha senha</Link>
+                        <Link  to="/forgot-password">Esqueci minha senha</Link>
                     </div>
 
                     <Button type="submit">
                         Confirmar
                     </Button>
                 </Form>
-            </main>
-        </div>
+            </Login>
+        </Container>
     )
 }
 

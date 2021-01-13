@@ -10,7 +10,7 @@ const Dashboard: React.FC = () => {
             <main>
                 <header>
                     <h1>Orfanatos Cadastrados</h1>
-                    <span>2 orfanatos</span>
+                    <span>2 orfanatos aaaa</span>
                 </header>
             </main>
         </div>

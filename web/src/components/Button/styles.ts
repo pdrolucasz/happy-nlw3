@@ -1,4 +1,6 @@
-button.confirm-button {
+import styled from 'styled-components'
+
+export const ButtonConfirm = styled.button`
     margin-top: 64px;
   
     width: 100%;
@@ -9,14 +11,14 @@ button.confirm-button {
     border-radius: 20px;
     color: #FFFFFF;
     font-weight: 800;
-  
+
     display: flex;
     justify-content: center;
     align-items: center;
-  
-    transition: background-color 0.2s;
-}
 
-button.confirm-button:hover {
-    background: #36CF82;
-}
+    transition: background-color 0.2s;
+
+    &:hover {
+        background: #36CF82;
+    }
+`

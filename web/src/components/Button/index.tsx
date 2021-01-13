@@ -1,14 +1,14 @@
 import React, { ButtonHTMLAttributes  } from 'react'
 
-import './styles.css'
+import { ButtonConfirm } from './styles'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
 
 const Button: React.FC<ButtonProps> = ({ children, ...rest }) => {
     return (
-        <button type="button" className="confirm-button" {...rest}>
+        <ButtonConfirm type="button" className="confirm-button" {...rest}>
             {children}
-        </button>
+        </ButtonConfirm>
     )
 }
 

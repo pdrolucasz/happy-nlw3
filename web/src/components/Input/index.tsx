@@ -2,13 +2,14 @@ import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 
 import { useField } from '@unform/core'
 
-import './styles.css'
+import { Container } from './styles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string
+    label: string
 }
 
-const Input: React.FC<InputProps> = ({ name, ...rest }) => {
+const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
     const inputRef = useRef(null)
 
     const [isFilled, setIsFilled] = useState(false)
@@ -28,17 +29,18 @@ const Input: React.FC<InputProps> = ({ name, ...rest }) => {
     }, [fieldName, registerField])
 
     return (
-        <div
-            className="container"
+        <Container
+            isFilled={isFilled}
         >
+            <label htmlFor="input">{label}</label>
             <input
-                className={isFilled ? 'green' : ''}
+                id="input"
                 onBlur={handleInputBlur}
                 defaultValue={defaultValue}
                 ref={inputRef}
                 {...rest}
             />
-        </div>
+        </Container>
     )
 }
 

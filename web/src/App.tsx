@@ -2,7 +2,7 @@ import React from 'react'
 
 import { BrowserRouter } from 'react-router-dom'
 
-import './styles/global.css'
+import GlobalStyle from './styles/global'
 import 'leaflet/dist/leaflet.css'
 
 import Routes from './routes'
@@ -15,6 +15,7 @@ function App() {
       <AppProvider>
         <Routes />
       </AppProvider>
+      <GlobalStyle />
     </BrowserRouter>
   );
 }
