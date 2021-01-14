@@ -7,10 +7,9 @@ import { Container, Error } from './styles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string
-    label: string
 }
 
-const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
+const Input: React.FC<InputProps> = ({ name, ...rest }) => {
     const inputRef = useRef(null)
 
     const [isFilled, setIsFilled] = useState(false)
@@ -33,8 +32,7 @@ const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
         <Container
             isFilled={isFilled}
             isErrored={!!error}
-        >
-            <label htmlFor="input">{label}</label>
+        >            
             <input
                 id="input"
                 onBlur={handleInputBlur}
@@ -43,7 +41,7 @@ const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
                 {...rest}
             />
 
-            {error && 
+            {error &&
                 <Error title={error}>
                     <FiAlertCircle color="c53030" size={20} />
                 </Error>

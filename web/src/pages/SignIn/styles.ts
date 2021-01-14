@@ -57,6 +57,13 @@ export const Login = styled.main`
   
         overflow: hidden;
 
+        label {
+            display: flex;
+            color: #8FA7B3;
+            margin-bottom: 8px;
+            line-height: 24px;
+        }
+
         legend {
             width: 100%;
 

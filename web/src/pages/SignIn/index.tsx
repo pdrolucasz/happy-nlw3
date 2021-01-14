@@ -90,14 +90,14 @@ const SignIn: React.FC = () => {
                 <Form ref={formRef} onSubmit={handleSubmit} className="signin">
                     <legend>Fazer login</legend>
 
+                    <label htmlFor="email">E-mail</label>
                     <Input
-                        label="E-mail"
                         name="email"
                         id="email"
                     />
 
+                    <label htmlFor="senha">Senha</label>
                     <Input
-                        label="Senha"
                         name="password"
                         id="senha"
                         type="password"

@@ -62,6 +62,7 @@ export const Container = styled(animated.div)<ToastProps>`
         border: 0;
         background: transparent;
         color: inherit;
+        cursor: pointer;
     }
 
     ${props => !props.hasDescription && css`

@@ -8,32 +8,31 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-    margin-top: 24px;
+    background: #F5F8FA;
+    border-radius: 20px;
+    border: 1px solid #D3E2E5;
+    padding: 16px;
+    width: 100%;
+    
+    display: flex;
+    align-items: center;
 
-    label {
-        display: flex;
-        color: #8FA7B3;
-        margin-bottom: 8px;
-        line-height: 24px;
+    ${props => props.isFilled && css`
+        border: 1px solid #37C77F;
+    `}
+    ${props => props.isErrored && css`
+        border-color: #c53030;
+    `}
+
+    & + div {
+        margin-top: 24px;
     }
-
+    
     input {
-        width: 100%;
-        background: #F5F8FA;
-        border: 1px solid #D3E2E5;
-        border-radius: 20px;
-        outline: none;
+        flex: 1;
+        background: transparent;
+        border: 0;
         color: #5C8599;
-        height: 64px;
-        padding: 0 16px;
-
-        ${props => props.isFilled && css`
-            border: 1px solid #37C77F;
-        `}
-
-        ${props => props.isErrored && css`
-            border-color: #c53030;
-        `}
     }
 `
 
