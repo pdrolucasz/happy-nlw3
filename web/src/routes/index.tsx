@@ -9,6 +9,7 @@ import Orphanage from '../pages/Orphanage'
 import CreateOrphanage from '../pages/CreateOrphanage'
 import SignIn from '../pages/SignIn'
 import Dashboard from '../pages/Dashboard'
+import ToBeApproved from '../pages/ToBeApproved'
 
 const Routes: React.FC = () => {
     return (
@@ -22,6 +23,7 @@ const Routes: React.FC = () => {
             <Route path="/signin" component={SignIn} />
 
             <Route path="/dashboard" component={Dashboard} isPrivate />
+            <Route path="/to-be-approved" component={ToBeApproved} isPrivate />
         </Switch>
     )
 }

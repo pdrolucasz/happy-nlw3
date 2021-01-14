@@ -8,6 +8,8 @@ import Sidebar from '../../components/Sidebar'
 import api from '../../services/api'
 import mapIcon from '../../utils/mapIcon'
 
+import nothingToShow from '../../images/nothing-to-show.png'
+
 import { Container, Content, Article } from './styles'
 
 interface Orphanage {
@@ -17,23 +19,27 @@ interface Orphanage {
     longitude: number
 }
 
-const Dashboard: React.FC = () => {
+const ToBeApproved: React.FC = () => {
     const [ orphanages, setOrphanages ] = useState<Orphanage[]>([])
 
     useEffect(() => {
-        api.get('/orphanages').then(response => {
+        api.get('/orphanageApprove').then(response => {
             setOrphanages(response.data)
         })
     }, [])
 
     return(
         <Container>
-            <Sidebar approve={true} dashboard={true} />
+            <Sidebar dashboard={true} />
             <Content>
                 <header>
-                    <h1>Orfanatos Cadastrados</h1>
+                    <h1>Cadastros pendentes</h1>
                     <span>{orphanages.length === 1 ? '1orfanato' : `${orphanages.length}orfanatos`}</span>
                 </header>
+
+                {!!!orphanages.length && (
+                    <img src={nothingToShow} alt=""/>
+                )}
 
                 <Article>
 
@@ -80,4 +86,4 @@ const Dashboard: React.FC = () => {
     )
 }
 
-export default Dashboard
+export default ToBeApproved

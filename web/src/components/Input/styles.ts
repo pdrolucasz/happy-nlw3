@@ -8,6 +8,8 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
+    margin-top: 24px;
+
     background: #F5F8FA;
     border-radius: 20px;
     border: 1px solid #D3E2E5;
@@ -23,10 +25,6 @@ export const Container = styled.div<ContainerProps>`
     ${props => props.isErrored && css`
         border-color: #c53030;
     `}
-
-    & + div {
-        margin-top: 24px;
-    }
     
     input {
         flex: 1;
