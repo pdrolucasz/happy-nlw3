@@ -1,5 +1,6 @@
 import { injectable, inject } from 'tsyringe'
 
+import IStorageProvider from '@shared/container/providers/StorageProviders/models/IStorageProvider'
 import Orphanage from '../infra/typeorm/entities/Orphanage'
 
 import IOrphanagesRepository from '../repositories/IOrphanagesRepository'
@@ -14,7 +15,10 @@ class ApproveOrphanageService {
         private orphanageRepository: IOrphanagesRepository,
 
         @inject('ImagesRepository')
-        private imagesRepository: IImagesRepository
+        private imagesRepository: IImagesRepository,
+
+        @inject('StorageProvider')
+        private storageProvider: IStorageProvider,
     ) {}
 
     public async execute(data: IOrphanageDTO): Promise<Orphanage> {
@@ -28,6 +32,17 @@ class ApproveOrphanageService {
             throw new Error('Orphanage already available')
         }
 
+        orphanage.images.map(image => {
+            this.storageProvider.deleteFile(image.path)
+        })
+        
+        const images = data.images.map(image => ({
+            path: image.path,
+            orphanage
+        }))
+
+        this.imagesRepository.updateImage(images)
+
         orphanage.about = data.about
         orphanage.available = true
         orphanage.instructions = data.instructions
@@ -36,13 +51,6 @@ class ApproveOrphanageService {
         orphanage.name = data.name
         orphanage.open_on_weekends = data.open_on_weekends
         orphanage.opening_hours = data.opening_hours
-
-        const images = data.images.map(image => ({
-            path: image.path,
-            orphanage
-        }))
-
-        this.imagesRepository.updateImage(images)
 
         return this.orphanageRepository.save(orphanage)
     }
