@@ -3,6 +3,7 @@ import { getRepository, Repository } from 'typeorm'
 import IOrphanagesRepository from '@modules/orphanages/repositories/IOrphanagesRepository'
 
 import ICreateOrphanageDTO from '@modules/orphanages/dtos/ICreateOrphanageDTO'
+import IOrphanageDTO from '@modules/orphanages/dtos/IOrphanageDTO'
 
 import Orphanage from '../entities/Orphanage'
 
@@ -37,17 +38,9 @@ class OrphanagesRepository implements IOrphanagesRepository {
         return orphanage
     }
 
-    public async approve(id: number): Promise<Orphanage> {
-        const orphanage = await this.ormRepository.findOneOrFail(id, {
-            relations: ['images']
-        })
-
-        orphanage.available = true
-
+    public async save(orphanage: IOrphanageDTO): Promise<Orphanage> {
         // orphanage will be updated to true
-        await this.ormRepository.save(orphanage)
-
-        return orphanage
+        return this.ormRepository.save(orphanage)
     }
 }
 

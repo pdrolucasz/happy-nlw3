@@ -12,6 +12,9 @@ import UserTokensRepository from '@modules/users/infra/typeorm/repositories/User
 import IOrphanagesRepository from '@modules/orphanages/repositories/IOrphanagesRepository'
 import OrphanagesRepository from '@modules/orphanages/infra/typeorm/repositories/OrphanagesRepository'
 
+import IImagesRepository from '@modules/orphanages/repositories/IImagesRepository'
+import ImagesRepository from '@modules/orphanages/infra/typeorm/repositories/ImagesRepository'
+
 container.registerSingleton<IUsersRepository>(
     'UsersRepository',
     UsersRepository
@@ -25,4 +28,9 @@ container.registerSingleton<IUserTokensRepository>(
 container.registerSingleton<IOrphanagesRepository>(
     'OrphanagesRepository',
     OrphanagesRepository
+)
+
+container.registerSingleton<IImagesRepository>(
+    'ImagesRepository',
+    ImagesRepository
 )

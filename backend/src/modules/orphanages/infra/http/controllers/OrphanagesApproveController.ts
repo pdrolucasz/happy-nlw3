@@ -1,9 +1,6 @@
 import {Request, Response} from 'express'
 import { container } from 'tsyringe'
 
-import { getRepository } from 'typeorm'
-import Orphanage from '../../typeorm/entities/Orphanage'
-
 import orphanageView from '@modules/orphanages/views/orphanages_view'
 
 import ListAllOrphanagesService from '@modules/orphanages/services/ListAllOrphanagesService'
@@ -31,10 +28,37 @@ export default {
 
     async update(request: Request, response: Response) {
         const { id } = request.params
+        const {
+            name,
+            latitude,
+            longitude,
+            about,
+            instructions,
+            opening_hours,
+            open_on_weekends
+        } = request.body
 
         const approveOrphanageService = container.resolve(ApproveOrphanageService)
+        
+        const requestImages = request.files as Express.Multer.File[]
+        
+        const images = requestImages.map((image) => {
+            return { path: image.filename }
+        })
+        
+        const data = {
+            id: Number(id),
+            name: String(name),
+            latitude: Number(latitude),
+            longitude: Number(longitude),
+            about: String(about),
+            instructions: String(instructions),
+            opening_hours: String(opening_hours),
+            open_on_weekends: open_on_weekends === 'true',
+            images
+        }
 
-        const orphanage = await approveOrphanageService.execute(Number(id))
+        const orphanage = await approveOrphanageService.execute(data)
         
         return response.status(201).json(orphanage)
     },
