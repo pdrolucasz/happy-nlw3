@@ -7,4 +7,5 @@ export default interface IOrphanagesRepository {
     findAllOrphanages(): Promise<Orphanage[] | undefined>
     create(data: ICreateOrphanageDTO): Promise<Orphanage>
     save(orphanage: IOrphanageDTO): Promise<Orphanage>
+    delete(orphanage: Orphanage): Promise<void>
 }

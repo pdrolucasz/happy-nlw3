@@ -42,6 +42,10 @@ class OrphanagesRepository implements IOrphanagesRepository {
         // orphanage will be updated to true
         return this.ormRepository.save(orphanage)
     }
+
+    public async delete(orphanage: Orphanage): Promise<void> {
+        await this.ormRepository.remove(orphanage)
+    }
 }
 
 export default OrphanagesRepository

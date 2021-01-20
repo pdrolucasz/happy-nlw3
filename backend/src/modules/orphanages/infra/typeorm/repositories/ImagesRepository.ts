@@ -22,9 +22,7 @@ class ImagesRepository implements IImagesRepository {
 
         const images = this.ormRepository.create(data)
 
-        await this.ormRepository.save(images)
-
-        return images
+        return this.ormRepository.save(images)
     }
 
 }

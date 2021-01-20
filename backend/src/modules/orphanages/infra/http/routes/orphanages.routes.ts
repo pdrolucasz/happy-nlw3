@@ -10,5 +10,6 @@ const upload = multer(uploadConfig)
 routes.get('/', OrphanagesController.index)
 routes.get('/:id', OrphanagesController.show)
 routes.post('/', upload.array('images') , OrphanagesController.create)
+routes.delete('/:id', OrphanagesController.delete)
 
 export default routes

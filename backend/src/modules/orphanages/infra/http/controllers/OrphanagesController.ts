@@ -6,6 +6,7 @@ import orphanageView from '@modules/orphanages/views/orphanages_view'
 import ListAllOrphanagesService from '@modules/orphanages/services/ListAllOrphanagesService'
 import DetailOrphanageService from '@modules/orphanages/services/DetailOrphanageService'
 import CreateOrphanageService from '@modules/orphanages/services/CreateOrphanageService'
+import DeleteOrphanageService from '@modules/orphanages/services/DeleteOrphanageService'
 
 export default {
     async index(request: Request, response: Response) {
@@ -59,5 +60,15 @@ export default {
         const orphanage = await createOrphanageService.execute(data)
         
         return response.status(201).json(orphanageView.render(orphanage))
+    },
+
+    async delete(request: Request, response: Response) {
+        const { id } = request.params
+
+        const deleteOrphanageService = container.resolve(DeleteOrphanageService)
+
+        await deleteOrphanageService.execute(Number(id))
+
+        return response.status(201).json()
     }
 }

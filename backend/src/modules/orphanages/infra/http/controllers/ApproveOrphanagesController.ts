@@ -60,6 +60,6 @@ export default {
 
         const orphanage = await approveOrphanageService.execute(data)
         
-        return response.status(201).json(orphanageView.render(orphanage))
+        return response.status(201).json()
     },
 }

@@ -9,7 +9,8 @@ import IImagesRepository from '../repositories/IImagesRepository'
 import IOrphanageDTO from '../dtos/IOrphanageDTO'
 
 @injectable()
-class ApproveOrphanageService {
+class UpdateOrphanageService
+ {
     constructor(
         @inject('OrphanagesRepository')
         private orphanageRepository: IOrphanagesRepository,
@@ -26,10 +27,6 @@ class ApproveOrphanageService {
 
         if(!orphanage) {
             throw new Error('Orphanage not found')
-        }
-
-        if(orphanage.available) {
-            throw new Error('Orphanage already available')
         }
 
         orphanage.images.map(image => {
@@ -52,10 +49,8 @@ class ApproveOrphanageService {
         orphanage.open_on_weekends = data.open_on_weekends
         orphanage.opening_hours = data.opening_hours
 
-        await this.orphanageRepository.save(orphanage)
-
-        return orphanage
+        return this.orphanageRepository.save(orphanage)
     }
 }
 
-export default ApproveOrphanageService
+export default UpdateOrphanageService
