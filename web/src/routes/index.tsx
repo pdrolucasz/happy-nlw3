@@ -10,6 +10,7 @@ import CreateOrphanage from '../pages/CreateOrphanage'
 import SignIn from '../pages/SignIn'
 import Dashboard from '../pages/Dashboard'
 import ToBeApproved from '../pages/ToBeApproved'
+import EditOrphanage from '../pages/EditOrphanage'
 
 const Routes: React.FC = () => {
     return (
@@ -24,6 +25,8 @@ const Routes: React.FC = () => {
 
             <Route path="/dashboard" component={Dashboard} isPrivate />
             <Route path="/to-be-approved" component={ToBeApproved} isPrivate />
+
+            <Route path="/edit-orphanage/:id" component={EditOrphanage} isPrivate />
         </Switch>
     )
 }

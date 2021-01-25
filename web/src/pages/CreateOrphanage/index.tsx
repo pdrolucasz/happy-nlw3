@@ -47,7 +47,7 @@ export default function CreateOrphanage() {
     const selectedImagesPreview = selectedImages.map(image => {
       return URL.createObjectURL(image)
     })
-
+    console.log(selectedImagesPreview)
     setPreviewImages(selectedImagesPreview)
   }
 
