@@ -1,6 +1,10 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-export const ButtonConfirm = styled.button`
+interface ButtonProps {
+    refuse?: boolean
+}
+
+export const ButtonConfirm = styled.button<ButtonProps>`
     margin-top: 64px;
   
     width: 100%;
@@ -21,4 +25,11 @@ export const ButtonConfirm = styled.button`
     &:hover {
         background: #36CF82;
     }
+
+    ${props => props.refuse && css`
+        background: #FF669D;
+        &:hover {
+            background: #f0598f;
+        }
+    `}
 `
