@@ -7,15 +7,11 @@ export const Container = styled.div`
 export const Content = styled.main`
     width: 1300px;
     margin: 64px auto;
+    background: transparent;
 
     padding: 64px 80px;
 
     overflow: hidden;
-
-    img {
-        border: 1px solid red;
-        align-self: center;
-    }
 
     header {
         border-bottom: 2px solid #D3E2E5;
@@ -41,7 +37,9 @@ export const Article = styled.article`
     margin-top: 40px;
 
     display: grid;
-    grid-template-columns: 2fr 2fr;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 1em;
 
     section {
         background: #ffffff;
@@ -55,16 +53,14 @@ export const Article = styled.article`
         div {
             display: flex;
             justify-content: space-between;
-            padding: 0 20px 20px 20px;
+            padding: 20px 20px 20px 20px;
             
             h2 {
                 color: #4D6F80;
                 align-self: center;
             }
 
-            nav {
-                display: flex;
-
+            nav {                
                 a {
                     width: 55px;
                     height: 55px;
@@ -75,14 +71,6 @@ export const Article = styled.article`
                     justify-content: center;
                     align-self: flex-end;
                     margin-right: 20px;
-                }
-
-                button {
-                    border: 0;
-                    background: #EBF2F5;
-                    width: 55px;
-                    height: 55px;
-                    border-radius: 15px;
                 }
             }
         }

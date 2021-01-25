@@ -62,7 +62,6 @@ const Dashboard: React.FC = () => {
                                 )}
                     
                                 </Map>
-                            ))
                             
                             <div>
                                 <h2>{orphanage.name}</h2>

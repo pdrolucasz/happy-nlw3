@@ -37,7 +37,9 @@ export const Article = styled.article`
     margin-top: 40px;
 
     display: grid;
-    grid-template-columns: 2fr 2fr;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 1em;
 
     section {
         background: #ffffff;
@@ -51,7 +53,7 @@ export const Article = styled.article`
         div {
             display: flex;
             justify-content: space-between;
-            padding: 0 20px 20px 20px;
+            padding: 20px 20px 20px 20px;
             
             h2 {
                 color: #4D6F80;
