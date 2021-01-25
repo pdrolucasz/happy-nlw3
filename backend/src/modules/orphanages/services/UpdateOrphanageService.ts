@@ -9,17 +9,13 @@ import IImagesRepository from '../repositories/IImagesRepository'
 import IOrphanageDTO from '../dtos/IOrphanageDTO'
 
 @injectable()
-class UpdateOrphanageService
- {
+class UpdateOrphanageService{
     constructor(
         @inject('OrphanagesRepository')
         private orphanageRepository: IOrphanagesRepository,
 
         @inject('ImagesRepository')
         private imagesRepository: IImagesRepository,
-
-        @inject('StorageProvider')
-        private storageProvider: IStorageProvider,
     ) {}
 
     public async execute(data: IOrphanageDTO): Promise<Orphanage> {
@@ -28,17 +24,13 @@ class UpdateOrphanageService
         if(!orphanage) {
             throw new Error('Orphanage not found')
         }
-
-        orphanage.images.map(image => {
-            this.storageProvider.deleteFile(image.path)
-        })
         
         const images = data.images.map(image => ({
             path: image.path,
             orphanage
         }))
 
-        this.imagesRepository.updateImage(images)
+        this.imagesRepository.updateImages(images)
 
         orphanage.about = data.about
         orphanage.available = true

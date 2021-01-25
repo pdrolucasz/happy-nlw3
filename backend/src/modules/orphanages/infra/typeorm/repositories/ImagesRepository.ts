@@ -13,16 +13,20 @@ class ImagesRepository implements IImagesRepository {
         this.ormRepository = getRepository(Image)
     }
 
-    public async updateImage(data: ImageDTO[]): Promise<Image[]> {
-        const oldImages = await this.ormRepository.find({
-            where: { orphanage: data[0].orphanage }
-        })
+    public async findById(id: number): Promise<Image> {
+        const image = await this.ormRepository.findOneOrFail(id)
 
-        await this.ormRepository.remove(oldImages)
+        return image
+    }
 
+    public async updateImages(data: ImageDTO[]): Promise<Image[]> {
         const images = this.ormRepository.create(data)
 
         return this.ormRepository.save(images)
+    }
+
+    public async deleteImage(image: Image): Promise<void> {
+        await this.ormRepository.remove(image)
     }
 
 }

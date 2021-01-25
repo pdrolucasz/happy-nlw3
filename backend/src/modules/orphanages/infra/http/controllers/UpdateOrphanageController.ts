@@ -4,7 +4,6 @@ import { container } from 'tsyringe'
 import orphanageView from '@modules/orphanages/views/orphanages_view'
 
 import UpdateOrphanageService from '@modules/orphanages/services/UpdateOrphanageService'
-import DeleteOrphanagesService from '@modules/orphanages/services/DeleteOrphanageService'
 
 export default {
     async update(request: Request, response: Response) {

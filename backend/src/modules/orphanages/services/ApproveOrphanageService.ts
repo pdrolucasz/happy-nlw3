@@ -16,9 +16,6 @@ class ApproveOrphanageService {
 
         @inject('ImagesRepository')
         private imagesRepository: IImagesRepository,
-
-        @inject('StorageProvider')
-        private storageProvider: IStorageProvider,
     ) {}
 
     public async execute(data: IOrphanageDTO): Promise<Orphanage> {
@@ -31,17 +28,13 @@ class ApproveOrphanageService {
         if(orphanage.available) {
             throw new Error('Orphanage already available')
         }
-
-        orphanage.images.map(image => {
-            this.storageProvider.deleteFile(image.path)
-        })
         
         const images = data.images.map(image => ({
             path: image.path,
             orphanage
         }))
 
-        this.imagesRepository.updateImage(images)
+        this.imagesRepository.updateImages(images)
 
         orphanage.about = data.about
         orphanage.available = true

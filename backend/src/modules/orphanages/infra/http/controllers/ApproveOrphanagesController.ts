@@ -58,7 +58,7 @@ export default {
             images
         }
 
-        const orphanage = await approveOrphanageService.execute(data)
+        await approveOrphanageService.execute(data)
         
         return response.status(201).json()
     },
