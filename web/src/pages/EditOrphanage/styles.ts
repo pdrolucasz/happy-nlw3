@@ -122,5 +122,11 @@ export const Content = styled.main`
                 }
             }
         }
+
+        footer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 10px;
+        }
     }
 `

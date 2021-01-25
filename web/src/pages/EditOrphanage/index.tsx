@@ -3,14 +3,13 @@ import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import { LeafletMouseEvent } from 'leaflet'
-import { useParams } from 'react-router-dom'
-import { FiPlus } from 'react-icons/fi'
-
+import { useParams, useHistory } from 'react-router-dom'
+import { FiPlus, FiXCircle, FiCheck } from 'react-icons/fi'
 
 import Sidebar from '../../components/Sidebar'
 import Input from '../../components/Input'
 import Textarea from '../../components/Textarea'
-//import ImageInput from '../../components/ImageInput'
+import Button from '../../components/Button'
 
 import { Container, Content } from './styles'
 
@@ -23,13 +22,18 @@ interface Orphanage {
     about: string
     instructions: string
     opening_hours: string
-    open_on_weekends: boolean
-    latitude: number
-    longitude: number
     images: Array<{
         id: number
         url: string
     }>
+}
+
+interface OrphanageData {
+    name: string
+    about: string
+    instructions: string
+    opening_hours: string
+    open_on_weekends: boolean
 }
 
 interface OrphanageParams {
@@ -37,19 +41,25 @@ interface OrphanageParams {
   }
 
 const EditOrphanage: React.FC = () => {
+    const history = useHistory()
     const formRef = useRef<FormHandles>(null)
     const params = useParams<OrphanageParams>()
 
-    const [position, setPosition] = useState({ latitude: 0, longitude: 0})
     const [orphanage, setOrphanage] = useState<Orphanage>()
+    const [position, setPosition] = useState({ latitude: 0, longitude: 0})
 
     const [images, setImages] = useState<File[]>([])
     const [previewImages, setPreviewImages] = useState<string[]>([])
-    const [open_on_weekends, setOpenOnWeekends] = useState(orphanage?.open_on_weekends)
+    const [open_on_weekends, setOpenOnWeekends] = useState(false)
 
     useEffect(() => {
         api.get(`/approveOrphanages/${params.id}`).then(response => {
             setOrphanage(response.data)
+            setPosition({
+                latitude: response.data.latitude,
+                longitude: response.data.longitude
+            })
+            setOpenOnWeekends(response.data.open_on_weekends)
         })
     }, [params.id])
 
@@ -69,7 +79,32 @@ const EditOrphanage: React.FC = () => {
         setPreviewImages(selectedImagesPreview)
     }
 
-    const handleSubmit = useCallback(async () => {}, [])
+    const handleSubmit = useCallback(async (orphanageData: OrphanageData) => {
+        const { latitude, longitude } = position
+
+        const data = new FormData()
+
+        data.append('name', orphanageData.name)
+        data.append('about', orphanageData.about)
+        data.append('latitude', String(latitude))
+        data.append('longitude', String(longitude))
+        data.append('instructions', orphanageData.instructions)
+        data.append('opening_hours', orphanageData.opening_hours)
+        data.append('open_on_weekends', String(open_on_weekends))
+        
+        images.forEach(image => {
+            data.append('images', image)
+        })
+
+        await api.put(`/approveOrphanages/${params.id}`, data)
+        history.push('/dashboard')
+    }, [history, images, open_on_weekends, params.id, position])
+
+    const refuseOrphanage = useCallback(async () => {
+        await api.delete(`/orphanages/${params.id}`)
+
+        history.push('/dashboard')
+    }, [history, params.id])
 
     const handleMapClick = useCallback((event: LeafletMouseEvent) => {
         const { lat, lng } = event.latlng
@@ -79,6 +114,11 @@ const EditOrphanage: React.FC = () => {
           longitude: lng
         })
     }, [])
+
+    if (!orphanage) {
+        return <p>Carregando...</p>
+    }
+
     return(
         <Container>
             <Sidebar />
@@ -89,10 +129,10 @@ const EditOrphanage: React.FC = () => {
                         <legend>Dados</legend>
 
                         <Map 
-                        center={[-3.7939864,-38.4744778]} 
-                        style={{ width: '100%', height: 280 }}
-                        zoom={15}
-                        onClick={handleMapClick}
+                            center={[position.latitude, position.longitude]} 
+                            style={{ width: '100%', height: 280 }}
+                            zoom={15}
+                            onClick={handleMapClick}
                         >
                         <TileLayer 
                             url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
@@ -116,7 +156,7 @@ const EditOrphanage: React.FC = () => {
                             <Input
                                 name="name"
                                 id="name"
-                                defaultValue={orphanage?.name}
+                                defaultValue={orphanage.name}
                             />
                         </div>
 
@@ -126,7 +166,7 @@ const EditOrphanage: React.FC = () => {
                                 name="about"
                                 id="about"
                                 maxLength={300}
-                                defaultValue={orphanage?.about}
+                                defaultValue={orphanage.about}
                             />
                         </div>
 
@@ -134,12 +174,12 @@ const EditOrphanage: React.FC = () => {
                             <label htmlFor="images">Fotos</label>
 
                             <div className="addImages">
-                                {orphanage?.images.map(image => (
-                                    <img key={image.id} src={image.url} alt={orphanage?.name}/>
+                                {orphanage.images.map(image => (
+                                    <img key={image.id} src={image.url} alt={orphanage.name}/>
                                 ))}
                                 {previewImages.map(image => {
                                     return (
-                                        <img key={image} src={image} alt={orphanage?.name}/>
+                                        <img key={image} src={image} alt={orphanage.name}/>
                                     )
                                 })}
 
@@ -159,7 +199,7 @@ const EditOrphanage: React.FC = () => {
                                 name="instructions"
                                 id="instructions"
                                 maxLength={300}
-                                defaultValue={orphanage?.instructions}
+                                defaultValue={orphanage.instructions}
                             />
                         </div>
 
@@ -168,7 +208,7 @@ const EditOrphanage: React.FC = () => {
                             <Input
                                 name="opening_hours"
                                 id="opening_hours"
-                                defaultValue={orphanage?.opening_hours}
+                                defaultValue={orphanage.opening_hours}
                             />
                         </div>
 
@@ -181,7 +221,7 @@ const EditOrphanage: React.FC = () => {
                                     className={open_on_weekends ? 'active' : ''}
                                     onClick={() => setOpenOnWeekends(true)}
                                 >
-                                Sim
+                                    Sim
                                 </button>
 
                                 <button
@@ -189,11 +229,16 @@ const EditOrphanage: React.FC = () => {
                                     className={!open_on_weekends ? 'active' : ''}
                                     onClick={() => setOpenOnWeekends(false)}
                                 >
-                                Não
+                                    Não
                                 </button>
                             </div>
                         </div>
                     </fieldset>
+
+                    <footer>
+                        <Button onClick={refuseOrphanage} refuse><FiXCircle size={24} style={{marginRight: 18}} />Recusar</Button>
+                        <Button type="submit"><FiCheck size={24} style={{marginRight: 18}} />Aceitar</Button>
+                    </footer>
                 </Form>
             </Content>
         </Container>
