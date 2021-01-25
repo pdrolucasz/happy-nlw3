@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import { Link } from 'react-router-dom';
 import { Map, Marker, TileLayer } from 'react-leaflet';
@@ -24,6 +24,10 @@ const Dashboard: React.FC = () => {
         api.get('/orphanages').then(response => {
             setOrphanages(response.data)
         })
+    }, [orphanages])
+
+    const removeOrphanage = useCallback(async (id: number) => {
+        await api.delete(`/orphanages/${id}`)
     }, [])
 
     return(
@@ -38,7 +42,7 @@ const Dashboard: React.FC = () => {
                 <Article>
 
                     {orphanages.map(orphanage => (
-                            <section>
+                            <section key={orphanage.id}>
                                 <Map 
                                     center={[orphanage.latitude, orphanage.longitude]} 
                                     style={{ width: '100%', height: 280 }}
@@ -68,7 +72,10 @@ const Dashboard: React.FC = () => {
 
                                 <nav>
                                     <Link to="/edit"><FiEdit3 color="#15C3D6" size={30} /></Link>
-                                    <button type="button"><FiTrash color="#15C3D6" size={30} /></button>
+                                    <button
+                                        onClick={() => removeOrphanage(orphanage.id)}
+                                        type="button"
+                                    ><FiTrash color="#15C3D6" size={30} /></button>
                                 </nav>
                             </div>
                         </section>
