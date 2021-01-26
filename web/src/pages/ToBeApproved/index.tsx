@@ -67,7 +67,7 @@ const ToBeApproved: React.FC = () => {
                                 <h2>{orphanage.name}</h2>
 
                                 <nav>
-                                    <Link to={`/edit-orphanage/${orphanage.id}`}><FiArrowRight color="#15C3D6" size={30} /></Link>
+                                    <Link to={`/approve-orphanage/${orphanage.id}`}><FiArrowRight color="#15C3D6" size={30} /></Link>
                                 </nav>
                             </div>
                         </section>

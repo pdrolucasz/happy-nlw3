@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
                                 <h2>{orphanage.name}</h2>
 
                                 <nav>
-                                    <Link to="/edit"><FiEdit3 color="#15C3D6" size={30} /></Link>
+                                    <Link to={`/update-orphanage/${orphanage.id}`}><FiEdit3 color="#15C3D6" size={30} /></Link>
                                     <button
                                         onClick={() => removeOrphanage(orphanage.id)}
                                         type="button"

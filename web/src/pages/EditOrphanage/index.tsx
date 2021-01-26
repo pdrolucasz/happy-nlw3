@@ -38,7 +38,8 @@ interface OrphanageData {
 
 interface OrphanageParams {
     id: string
-  }
+    edit: 'approve' | 'update'
+}
 
 const EditOrphanage: React.FC = () => {
     const history = useHistory()
@@ -53,7 +54,7 @@ const EditOrphanage: React.FC = () => {
     const [open_on_weekends, setOpenOnWeekends] = useState(false)
 
     useEffect(() => {
-        api.get(`/approveOrphanages/${params.id}`).then(response => {
+        api.get(`/${params.edit === 'approve' ? 'approveOrphanages' : 'orphanages'}/${params.id}`).then(response => {
             setOrphanage(response.data)
             setPosition({
                 latitude: response.data.latitude,
@@ -61,23 +62,22 @@ const EditOrphanage: React.FC = () => {
             })
             setOpenOnWeekends(response.data.open_on_weekends)
         })
-    }, [params.id])
+    }, [params.edit, params.id])
 
-    function handleSelectImages(event: ChangeEvent<HTMLInputElement>) {
+    const handleSelectImages = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) {
-          return
-        }
-    
-        const selectedImages = Array.from(event.target.files)
-    
-        setImages(selectedImages)
-    
-        const selectedImagesPreview = selectedImages.map(image => {
-          return URL.createObjectURL(image)
-        })
-        console.log(selectedImagesPreview)
-        setPreviewImages(selectedImagesPreview)
-    }
+            return
+          }
+      
+          const selectedImages = Array.from(event.target.files)
+      
+          setImages(selectedImages)
+      
+          const selectedImagesPreview = selectedImages.map(image => {
+            return URL.createObjectURL(image)
+          })
+          setPreviewImages(selectedImagesPreview)
+    }, [])
 
     const handleSubmit = useCallback(async (orphanageData: OrphanageData) => {
         const { latitude, longitude } = position
@@ -96,9 +96,12 @@ const EditOrphanage: React.FC = () => {
             data.append('images', image)
         })
 
+        params.edit === 'approve' ?
         await api.put(`/approveOrphanages/${params.id}`, data)
+        :
+        await api.put(`/updateOrphanage/${params.id}`, data)
         history.push('/dashboard')
-    }, [history, images, open_on_weekends, params.id, position])
+    }, [history, images, open_on_weekends, params.edit, params.id, position])
 
     const refuseOrphanage = useCallback(async () => {
         await api.delete(`/orphanages/${params.id}`)
@@ -235,10 +238,14 @@ const EditOrphanage: React.FC = () => {
                         </div>
                     </fieldset>
 
-                    <footer>
-                        <Button onClick={refuseOrphanage} refuse><FiXCircle size={24} style={{marginRight: 18}} />Recusar</Button>
-                        <Button type="submit"><FiCheck size={24} style={{marginRight: 18}} />Aceitar</Button>
-                    </footer>
+                    {params.edit === 'approve' ? (
+                        <footer>
+                            <Button onClick={refuseOrphanage} refuse><FiXCircle size={24} style={{marginRight: 18}} />Recusar</Button>
+                            <Button type="submit"><FiCheck size={24} style={{marginRight: 18}} />Aceitar</Button>
+                        </footer>
+                    ):
+                        <Button type="submit">Confirmar</Button>
+                    }
                 </Form>
             </Content>
         </Container>
