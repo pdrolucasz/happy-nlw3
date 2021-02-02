@@ -11,6 +11,8 @@ import SignIn from '../pages/SignIn'
 import Dashboard from '../pages/Dashboard'
 import ToBeApproved from '../pages/ToBeApproved'
 import EditOrphanage from '../pages/EditOrphanage'
+import ForgotPassword from '../pages/ForgotPassword'
+import ResetPassword from '../pages/ResetPassword'
 
 const Routes: React.FC = () => {
     return (
@@ -22,6 +24,8 @@ const Routes: React.FC = () => {
             <NormalRoute path="/orphanages/:id" component={Orphanage} />
 
             <Route path="/signin" component={SignIn} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/reset-password" component={ResetPassword} />
 
             <Route path="/dashboard" component={Dashboard} isPrivate />
             <Route path="/to-be-approved" component={ToBeApproved} isPrivate />
